@@ -27,35 +27,24 @@ public class LoginFrame extends JFrame implements ActionListener {
         mainPanel.add(titleLabel);
         mainPanel.add(Box.createVerticalStrut(20));
 
-        JPanel usernamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        JLabel usernameLabel = new JLabel("Username: ");
-
+        JPanel userPanel = new JPanel();
+        userPanel.add(new JLabel("Username:"));
         usernameField = new JTextField(15);
+        userPanel.add(usernameField);
 
-        usernamePanel.add(usernameLabel);
-        usernamePanel.add(usernameField);
-
-        mainPanel.add(usernamePanel);
-
-        JPanel passwordPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        JLabel passwordLabel = new JLabel("Password: ");
-
+        JPanel passPanel = new JPanel();
+        passPanel.add(new JLabel("Password:"));
         passwordField = new JPasswordField(15);
+        passPanel.add(passwordField);
 
-        passwordPanel.add(passwordLabel);
-        passwordPanel.add(passwordField);
-
-        mainPanel.add(passwordPanel);
-
-        mainPanel.add(Box.createVerticalStrut(15));
+        mainPanel.add(userPanel);
+        mainPanel.add(passPanel);
 
         loginButton = new JButton("Login");
-        loginButton.setPreferredSize(new Dimension(120, 35));
         loginButton.addActionListener(this);
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        mainPanel.add(Box.createVerticalStrut(10));
         mainPanel.add(loginButton);
 
         add(mainPanel);
@@ -69,17 +58,12 @@ public class LoginFrame extends JFrame implements ActionListener {
         String username = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
 
-        if (username.equals("admin")
+        if(username.equals("admin")
                 && password.equals("admin123")) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "Login Successful"
-            );
 
             dispose();
 
-            new PatientFrame();
+            new DashboardFrame();
 
         } else {
 
