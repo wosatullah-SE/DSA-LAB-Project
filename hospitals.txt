@@ -1,0 +1,3 @@
+101|City Hospital|City Hospital|7|042111222333
+102|General Hospital|General Hospital|4|042444555666
+103|Life Care Clinic|Life Care Clinic|3|042777888999

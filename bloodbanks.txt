@@ -1,0 +1,4 @@
+A+|Hope Blood Bank|Central Blood Bank|10|03210000002
+AB+|Care Blood Bank|North Blood Bank|8|03210000004
+B-|Red Life Bank|North Blood Bank|6|03210000003
+O+|Swift Blood Center|Central Blood Bank|15|03210000001

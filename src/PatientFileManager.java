@@ -1,94 +1,42 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class PatientFileManager {
-
-    private static final String FILE_NAME =
-            "patients.txt";
-
-    public static void savePatients(
-            PatientManager manager) {
-
-        try {
-
-            BufferedWriter writer =
-                    new BufferedWriter(
-                            new FileWriter(FILE_NAME));
-
-            for(Patient patient :
-                    manager.getPatients().values()) {
-
-                writer.write(
-                        patient.getPatientId() + "," +
-                                patient.getName() + "," +
-                                patient.getAge() + "," +
-                                patient.getBloodGroup()
-                );
-
+    public static void savePatients(PatientManager manager, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Patient patient : manager.getAllPatients()) {
+                writer.write(patient.toFileLine());
                 writer.newLine();
             }
-
-            writer.close();
-
-        } catch(Exception e) {
-
-            System.out.println(
-                    "Error Saving File"
-            );
+        } catch (IOException e) {
+            System.out.println("Error saving patient file: " + e.getMessage());
         }
     }
 
-    public static void loadPatients(
-            PatientManager manager) {
-
-        File file = new File(FILE_NAME);
-
-        if(!file.exists()) {
+    public static void loadPatients(PatientManager manager, String fileName) {
+        File file = new File(fileName);
+        if (!file.exists()) {
             return;
         }
 
-        try {
-
-            BufferedReader reader =
-                    new BufferedReader(
-                            new FileReader(FILE_NAME));
-
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
-
-            while((line = reader.readLine()) != null) {
-
-                String[] data =
-                        line.split(",");
-
-                int id =
-                        Integer.parseInt(data[0]);
-
-                String name =
-                        data[1];
-
-                int age =
-                        Integer.parseInt(data[2]);
-
-                String bloodGroup =
-                        data[3];
-
-                Patient patient =
-                        new Patient(
-                                id,
-                                name,
-                                age,
-                                bloodGroup
-                        );
-
-                manager.addPatient(patient);
+            while ((line = reader.readLine()) != null) {
+                if (line.trim().isEmpty()) {
+                    continue;
+                }
+                try {
+                    manager.addPatient(Patient.fromFileLine(line));
+                } catch (Exception ex) {
+                    System.out.println("Skipped invalid patient record: " + line);
+                }
             }
-
-            reader.close();
-
-        } catch(Exception e) {
-
-            System.out.println(
-                    "Error Loading File"
-            );
+        } catch (IOException e) {
+            System.out.println("Error loading patient file: " + e.getMessage());
         }
     }
 }
